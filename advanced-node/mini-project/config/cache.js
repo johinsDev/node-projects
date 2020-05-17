@@ -1,10 +1,15 @@
 "use strict";
 
 module.exports = {
-  default: "memory",
+  default: "redis",
   stores: {
     memory: {
       driver: "memory",
+    },
+    redis: {
+      driver: "redis",
+      port: 6379,
+      host: "127.0.0.1",
     },
   },
 };

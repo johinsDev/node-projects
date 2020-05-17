@@ -15,9 +15,7 @@ module.exports = (app) => {
   });
 
   app.get("/api/blogs", async (req, res) => {
-    const cachedBlogs = await Cache.remember("blogs", 1, async function () {
-      return Blog.find({});
-    });
+    const cachedBlogs = await Blog.find({}).cache({ expiration: 10 });
 
     res.json(cachedBlogs);
   });
@@ -30,8 +28,11 @@ module.exports = (app) => {
       content,
     });
 
+    Cache.forget(JSON.stringify({ collection: "blogs" }));
+
     try {
       await blog.save();
+
       res.send(blog);
     } catch (err) {
       res.send(400, err);

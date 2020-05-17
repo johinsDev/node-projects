@@ -90,7 +90,6 @@ class Repository {
 
   async forever(key, value) {
     this._store.forever(await this._itemKey(key), value);
-    this._fireCacheEvent("write", [key, value, 0]);
   }
 
   async remember(key, minutes, closure) {

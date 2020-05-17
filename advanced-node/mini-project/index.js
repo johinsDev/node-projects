@@ -4,11 +4,11 @@ const cookieSession = require("cookie-session");
 const passport = require("passport");
 const bodyParser = require("body-parser");
 const keys = require("./config/keys");
-const redis = require("redis");
 
 require("./models/User");
 require("./models/Blog");
 require("./services/passport");
+require("./services/mongoose-cache-plugin");
 
 // Remove the warning with Promise
 mongoose.Promise = global.Promise;
@@ -28,12 +28,6 @@ mongoose.connection
   .on("error", (e) => {
     throw e;
   });
-
-const client = redis.createClient();
-
-client.on("ready", function (error) {
-  console.log("Redis ready");
-});
 
 const app = express();
 

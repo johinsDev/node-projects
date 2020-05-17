@@ -3,6 +3,7 @@
 const config = require("../../config/cache");
 
 const MemoryStore = require("./MemoryStore");
+const RedisStore = require("./RedisStore");
 const Repository = require("./Repository");
 
 const cacheMethods = [
@@ -18,6 +19,11 @@ const cacheMethods = [
   "remember",
 ];
 
+// @TODO Create a cache manager
+// Manger should permilt change store or extends with custom store
+// Reposityory for common use of stores
+// Interface for each store
+// Tags cache for tag cache
 class CacheManger {
   constructor() {
     this._stores = [];
@@ -65,6 +71,11 @@ class CacheManger {
 
   _createMemoryDriver(config) {
     return new Repository(new MemoryStore(config));
+  }
+
+  _createRedisDriver(config) {
+    const connection = config["connection"] ? config["connection"] : "local";
+    return new Repository(new RedisStore(config, connection));
   }
 
   getDefaultDriver() {
